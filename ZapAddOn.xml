@@ -1,0 +1,21 @@
+<zapaddon>
+    <name>Extensive OpenAPI Support</name>
+    <version>1</version>
+    <status>alpha</status>
+    <description>Imports and scans an OpenAPI specification using predefined libraries.</description>
+    <author>Sammi Fux</author>
+    <url></url>
+    <changes>
+    </changes>
+    <extensions>
+        <extension>org.zaproxy.zap.extension.openapiscanner.</extension>
+    </extensions>
+    <ascanrules>
+    </ascanrules>
+    <pscanrules>
+    </pscanrules>
+    <filters/>
+    <files/>
+    <not-before-version>2.6.0</not-before-version>
+    <not-from-version></not-from-version>
+</zapaddon>
