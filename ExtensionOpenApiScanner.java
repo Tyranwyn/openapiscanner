@@ -4,9 +4,11 @@ import org.apache.log4j.Logger;
 import org.parosproxy.paros.extension.CommandLineArgument;
 import org.parosproxy.paros.extension.CommandLineListener;
 import org.parosproxy.paros.extension.ExtensionAdaptor;
+import org.parosproxy.paros.extension.ExtensionHook;
 import org.zaproxy.zap.Version;
 import org.zaproxy.zap.view.ZapMenuItem;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.List;
 
@@ -21,8 +23,39 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor implements Command
 
     private static final Logger LOG = Logger.getLogger(ExtensionOpenApiScanner.class);
 
-    public ExtensionOpenApiScanner(String NAME) {
+    public ExtensionOpenApiScanner() {
         super(NAME);
+    }
+
+    @Override
+    public void hook(ExtensionHook extensionHook) {
+        super.hook(extensionHook);
+
+        // Add the scanner menu option to the top menu
+        if (getView() != null)
+            extensionHook.getHookMenu().addToolsMenuItem(getMenuOpenApiScanner());
+
+    }
+
+    @Override
+    public void unload() {
+        super.unload();
+    }
+
+    /* Define scanner menu option to be added to the top menu */
+    private ZapMenuItem getMenuOpenApiScanner() {
+        if (menuOpenApiScanner == null) {
+            menuOpenApiScanner = new ZapMenuItem("openapiscanner.topmenu.tools.openapiscanner");
+            menuOpenApiScanner.setToolTipText("openapiscanner.topmenu.tools.openapiscanner.tooltip");
+
+            menuOpenApiScanner.addActionListener(e -> {
+                SwingUtilities.invokeLater(() -> {
+
+                });
+            });
+
+        }
+        return menuOpenApiScanner;
     }
 
     @Override
