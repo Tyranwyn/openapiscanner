@@ -1,14 +1,17 @@
 package org.zaproxy.zap.extension.openapiscanner;
 
 import org.apache.log4j.Logger;
+import org.parosproxy.paros.Constant;
 import org.parosproxy.paros.extension.CommandLineArgument;
 import org.parosproxy.paros.extension.CommandLineListener;
 import org.parosproxy.paros.extension.ExtensionAdaptor;
 import org.parosproxy.paros.extension.ExtensionHook;
+import org.parosproxy.paros.view.View;
 import org.zaproxy.zap.Version;
 import org.zaproxy.zap.view.ZapMenuItem;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
 
@@ -46,12 +49,17 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor implements Command
     private ZapMenuItem getMenuOpenApiScanner() {
         if (menuOpenApiScanner == null) {
             menuOpenApiScanner = new ZapMenuItem("openapiscanner.topmenu.tools.openapiscanner");
-            menuOpenApiScanner.setToolTipText("openapiscanner.topmenu.tools.openapiscanner.tooltip");
+            menuOpenApiScanner.setToolTipText(Constant.messages.getString("openapiscanner.topmenu.tools.openapiscanner.tooltip"));
 
-            menuOpenApiScanner.addActionListener(e -> {
-                SwingUtilities.invokeLater(() -> {
-
-                });
+            menuOpenApiScanner.addActionListener(new java.awt.event.ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    View.getSingleton().showMessageDialog(Constant.messages.getString("openapiscanner.topmenu.msg.example"));
+                }
+//                    e -> {
+//                SwingUtilities.invokeLater(() -> {
+//
+//                });
             });
 
         }
@@ -75,6 +83,6 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor implements Command
 
     @Override
     public String getAuthor() {
-        return null;
+        return Constant.messages.getString("openapiscanner.author");
     }
 }
