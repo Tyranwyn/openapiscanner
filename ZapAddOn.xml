@@ -8,7 +8,7 @@
     <changes>
     </changes>
     <extensions>
-        <extension>org.zaproxy.zap.extension.openapiscanner.</extension>
+        <extension>org.zaproxy.zap.extension.openapiscanner.ExtensionOpenApiScanner</extension>
     </extensions>
     <ascanrules>
     </ascanrules>
