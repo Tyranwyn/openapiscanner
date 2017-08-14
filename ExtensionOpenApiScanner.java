@@ -7,7 +7,6 @@ import org.parosproxy.paros.extension.CommandLineListener;
 import org.parosproxy.paros.extension.ExtensionAdaptor;
 import org.parosproxy.paros.extension.ExtensionHook;
 import org.parosproxy.paros.view.View;
-import org.zaproxy.zap.Version;
 import org.zaproxy.zap.view.ZapMenuItem;
 
 import javax.swing.*;
@@ -51,15 +50,16 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor implements Command
             menuOpenApiScanner = new ZapMenuItem("openapiscanner.topmenu.tools.openapiscanner");
             menuOpenApiScanner.setToolTipText(Constant.messages.getString("openapiscanner.topmenu.tools.openapiscanner.tooltip"));
 
+            final ExtensionOpenApiScanner shadowCopy = this;
             menuOpenApiScanner.addActionListener(new java.awt.event.ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    View.getSingleton().showMessageDialog(Constant.messages.getString("openapiscanner.topmenu.msg.example"));
+//                    View.getSingleton().showMessageDialog(Constant.messages.getString("openapiscanner.topmenu.msg.example"));
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() { new OpenApiScannerDialog(View.getSingleton().getMainFrame(), shadowCopy); }
+                    });
                 }
-//                    e -> {
-//                SwingUtilities.invokeLater(() -> {
-//
-//                });
             });
 
         }
