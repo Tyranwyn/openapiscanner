@@ -9,20 +9,20 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class OpenApiScannerDialog extends AbstractDialog {
+public class ImportOpenApiDialog extends AbstractDialog {
 
     private static final long serialVersionUID = 1L;
-    private static final String PREFIX = "openapiscanner.dialog.";
+    private static final String PREFIX = "openapiscanner.importdialog.";
 
-    private JButton buttonImport = new JButton(Constant.messages.getString(PREFIX + "import"));
-    private JButton buttonCancel = new JButton("Cancel");
+    private JButton buttonNext = new JButton(Constant.messages.getString(PREFIX + "import"));
+    private JButton buttonCancel = new JButton(Constant.messages.getString("all.button.cancel"));
     private JButton buttonFileChooser = new JButton(Constant.messages.getString(PREFIX + "file"));
 
     private JTextField importUrl = new JTextField(30);
 
     ExtensionOpenApiScanner caller;
 
-    public OpenApiScannerDialog(JFrame parent, ExtensionOpenApiScanner caller) {
+    public ImportOpenApiDialog(JFrame parent, ExtensionOpenApiScanner caller) {
         super(parent, true);
         this.setTitle(Constant.messages.getString(PREFIX + "title"));
         this.caller = caller;
@@ -41,20 +41,15 @@ public class OpenApiScannerDialog extends AbstractDialog {
 
         // Configuring buttons
         buttonFileChooser.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) { onFileChooser(); }
+            public void actionPerformed(ActionEvent e) { onFileButton(); }
         });
 
-        buttonImport.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onImport();
-            }
+        buttonNext.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) { onImportButton(); }
         });
 
         buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                OpenApiScannerDialog.this.setVisible(false);
-                OpenApiScannerDialog.this.dispose();
-            }
+            public void actionPerformed(ActionEvent e) { onCancelButton(); }
         });
 
         // Adding components to the frame
@@ -87,14 +82,14 @@ public class OpenApiScannerDialog extends AbstractDialog {
         constraints.gridx = 2;
         constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.CENTER;
-        add(buttonImport, constraints);
+        add(buttonNext, constraints);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         pack();
         setVisible(true);
     }
 
-    private void onFileChooser() {
+    private void onFileButton() {
         // Prompt for a OpenApi file.
         final JFileChooser chooser = new JFileChooser(Model.getSingleton().getOptionsParam().getUserDirectory());
         int rc = chooser.showOpenDialog(View.getSingleton().getMainFrame());
@@ -103,15 +98,23 @@ public class OpenApiScannerDialog extends AbstractDialog {
         }
     }
 
-    private void onImport() {
-        // add your code here
-        dispose();
+    private void onImportButton() {
+        // Opening scanner dialog
+        String url = importUrl.getText();
+        // Check if the parameter has any value
+        if (!url.isEmpty()) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new ScanOpenApiDialog(View.getSingleton().getMainFrame(), caller, importUrl.getText());
+                }
+            });
+            dispose();
+        }
     }
 
-//    public static void main(String[] args) {
-//        OpenApiScannerDialog dialog = new OpenApiScannerDialog();
-//        dialog.setSize(500, 150);
-//        dialog.setVisible(true);
-//        System.exit(0);
-//    }
+    private void onCancelButton() {
+        ImportOpenApiDialog.this.setVisible(false);
+        ImportOpenApiDialog.this.dispose();
+    }
 }

@@ -57,7 +57,7 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor implements Command
 //                    View.getSingleton().showMessageDialog(Constant.messages.getString("openapiscanner.topmenu.msg.example"));
                     SwingUtilities.invokeLater(new Runnable() {
                         @Override
-                        public void run() { new OpenApiScannerDialog(View.getSingleton().getMainFrame(), shadowCopy); }
+                        public void run() { new ImportOpenApiDialog(View.getSingleton().getMainFrame(), shadowCopy); }
                     });
                 }
             });
