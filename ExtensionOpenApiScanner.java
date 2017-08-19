@@ -152,24 +152,20 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor {
                     String path = "";
                     switch (type) {
                         case "0":
-                            path = Constant.messages.getString("openapiscanner.paths.xss");
-//                            path = "D:/Documents/IdeaProjects/FinalWork/zap-extensions/src/org/zaproxy/zap/extension/openapiscanner/fuzzers/xss.txt";
+                            path = Constant.getZapHome() + "fuzzers/xss.txt";
                             break;
                         case "1":
-                            path = Constant.messages.getString("openapiscanner.paths.sqli");
-//                            path = "D:/Documents/IdeaProjects/FinalWork/zap-extensions/src/org/zaproxy/zap/extension/openapiscanner/fuzzers/sqli.txt";
+                            path = Constant.getZapHome() + "fuzzers/sqli.txt";
                             break;
                         case "2":
-                            path = Constant.messages.getString("openapiscanner.paths.xmli");
-//                            path = "D:/Documents/IdeaProjects/FinalWork/zap-extensions/src/org/zaproxy/zap/extension/openapiscanner/fuzzers/xmli.txt";
+                            path = Constant.getZapHome() + "fuzzers/xmli.txt";
                             break;
                         case "3":
-                            path = Constant.messages.getString("openapiscanner.paths.bufferoverflow");
-//                            path = "D:/Documents/IdeaProjects/FinalWork/zap-extensions/src/org/zaproxy/zap/extension/openapiscanner/fuzzers/bufferoverflow.txt";
+                            path = Constant.getZapHome() + "fuzzers/bufferoverflow.txt";
                             break;
                         case "4":
-                            path = Constant.messages.getString("openapiscanner.paths.tba");
-//                            path = Constant.messages.getString("openapiscanner.paths.tba");
+                            // path = Constant.getZapHome() + "fuzzers/.txt";
+                            path = "";
                             break;
                         default:
                             break;
