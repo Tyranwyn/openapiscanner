@@ -94,7 +94,14 @@ public class ImportOpenApiDialog extends AbstractDialog {
         final JFileChooser chooser = new JFileChooser(Model.getSingleton().getOptionsParam().getUserDirectory());
         int rc = chooser.showOpenDialog(View.getSingleton().getMainFrame());
         if (rc == JFileChooser.APPROVE_OPTION) {
-//            importOpenApiDefinition(chooser.getSelectedFile(), true);
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    new ScanOpenApiDialog(View.getSingleton().getMainFrame(), caller, chooser.getSelectedFile());
+                }
+            });
+            setVisible(false);
+            dispose();
         }
     }
 
@@ -109,6 +116,7 @@ public class ImportOpenApiDialog extends AbstractDialog {
                     new ScanOpenApiDialog(View.getSingleton().getMainFrame(), caller, importUrl.getText());
                 }
             });
+            setVisible(false);
             dispose();
         }
     }

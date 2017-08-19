@@ -1,12 +1,16 @@
 package org.zaproxy.zap.extension.openapiscanner;
 
+import org.apache.commons.httpclient.URI;
+import org.apache.commons.httpclient.URIException;
 import org.parosproxy.paros.Constant;
 import org.parosproxy.paros.extension.AbstractDialog;
+import org.parosproxy.paros.view.View;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class ScanOpenApiDialog extends AbstractDialog {
     private static final long serialVersionUID = 1L;
@@ -25,7 +29,8 @@ public class ScanOpenApiDialog extends AbstractDialog {
     private JButton buttonCancel = new JButton(Constant.messages.getString("all.button.cancel"));
 
     ExtensionOpenApiScanner caller;
-    private String url;
+    private String url = "";
+    private File file = null;
 
     // Constructor with given url
     public ScanOpenApiDialog(JFrame parent, ExtensionOpenApiScanner caller, String url) {
@@ -43,9 +48,10 @@ public class ScanOpenApiDialog extends AbstractDialog {
     }
 
     // Constructor with given local file
-    /*public ScanOpenApiDialog(JFrame parent, ExtensionOpenApiScanner caller, File file) {
+    public ScanOpenApiDialog(JFrame parent, ExtensionOpenApiScanner caller, File file) {
         super(parent, true);
         this.caller = caller;
+        this.file = file;
 
         if (parent != null) {
             Dimension parentSize = parent.getSize();
@@ -54,7 +60,7 @@ public class ScanOpenApiDialog extends AbstractDialog {
         }
 
         configureLayout();
-    }*/
+    }
 
     private void configureLayout() {
         this.setTitle(Constant.messages.getString(PREFIX + "title"));
@@ -79,31 +85,37 @@ public class ScanOpenApiDialog extends AbstractDialog {
         constraints.gridx = 0;
         constraints.gridy = 0;
         rbXss.setSelected(true);
+        rbXss.setActionCommand("0");
         rbGroup.add(rbXss);
         add(rbXss, constraints);
 
         // SQLI radiobutton
         constraints.gridy = 1;
+        rbSqlI.setActionCommand("1");
         rbGroup.add(rbSqlI);
         add(rbSqlI, constraints);
 
         // XMLI radiobutton
         constraints.gridy = 2;
+        rbXmlI.setActionCommand("2");
         rbGroup.add(rbXmlI);
         add(rbXmlI, constraints);
 
         // Buffer overflow radiobutton
         constraints.gridy = 3;
+        rbBO.setActionCommand("3");
         rbGroup.add(rbBO);
         add(rbBO, constraints);
 
         // TBD radiobutton
         constraints.gridy = 4;
+        rbYetToDefine.setActionCommand("4");
         rbGroup.add(rbYetToDefine);
         add(rbYetToDefine, constraints);
 
         // Custom radiobutton
         constraints.gridy = 5;
+        rbCustom.setActionCommand("5");
         rbGroup.add(rbCustom);
         add(rbCustom, constraints);
 
@@ -123,6 +135,21 @@ public class ScanOpenApiDialog extends AbstractDialog {
     }
 
     private void onScanButton() {
+//        System.out.println(rbGroup.getSelection().getActionCommand());
+        if (caller != null) {
+            if (!url.isEmpty()) {
+                // Parsing in other thread
+                try {
+                    caller.importOpenApiDefinition(new URI(url, false),true, rbGroup.getSelection().getActionCommand());
+                } catch (URIException e) {
+                    View.getSingleton().showWarningDialog(thisDialog, Constant.messages.getString(PREFIX + "badurl"));
+                }
+            } else if (url.isEmpty() || file != null) {
+                // Parsing imported file in another thread
+                caller.importOpenApiDefinition(file, true, rbGroup.getSelection().getActionCommand());
+            }
+        }
+        setVisible(false);
         dispose();
     }
 
