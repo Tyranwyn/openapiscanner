@@ -60,7 +60,7 @@ public class OpenApiAPI extends ApiImplementor {
                 throw new ApiException(ApiException.Type.ILLEGAL_PARAMETER, PARAM_FILE);
             }
 
-            List<String> errors = extension.importOpenApiDefinition(file, false, "");
+            List<String> errors = extension.importOpenApiDefinition(file, false, "", "");
 
             if (errors == null) {
                 // A null list indicates that an exception occurred while parsing the file...
@@ -87,7 +87,7 @@ public class OpenApiAPI extends ApiImplementor {
                     }
                 }
                 
-                List<String> errors = extension.importOpenApiDefinition(new URI(params.getString(PARAM_URL), false),false,"");
+                List<String> errors = extension.importOpenApiDefinition(new URI(params.getString(PARAM_URL), false),false,"","");
                 
                 ApiResponseList result = new ApiResponseList(name);
                 for (String error : errors) {

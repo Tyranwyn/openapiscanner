@@ -9,10 +9,12 @@ public class MergeLibReqModel {
     private ArrayList<String> fuzzList;
     private List<RequestModel> requestModels;
     private List<RequestModel> convertedRequestModels = new ArrayList<>();
+    private String type;
 
-    public MergeLibReqModel(ArrayList<String> fuzzList, List<RequestModel> requestModels) {
+    public MergeLibReqModel(ArrayList<String> fuzzList, List<RequestModel> requestModels, String type) {
         this.fuzzList = fuzzList;
         this.requestModels = requestModels;
+        this.type = type;
         loopRequestModels();
     }
 
@@ -24,7 +26,14 @@ public class MergeLibReqModel {
         for (RequestModel requestModel : requestModels)
             for (String fuzzItem : fuzzList) {
                 RequestModel newReqMod = requestModel.copyModel();
-                newReqMod.setUrl(convertUrl(newReqMod.getUrl(), fuzzItem));
+                switch (type) {
+                    case "url":
+                        newReqMod.setUrl(convertUrl(newReqMod.getUrl(), fuzzItem));
+                        break;
+                    case "body":
+                        newReqMod.setBody(fuzzItem);
+                        break;
+                }
                 convertedRequestModels.add(newReqMod);
             }
     }

@@ -17,13 +17,16 @@ public class ScanOpenApiDialog extends AbstractDialog {
     private static final String PREFIX = "openapiscanner.scandialog.";
 
     private ButtonGroup rbGroup = new ButtonGroup();
+    private ButtonGroup rbTypeGroup = new ButtonGroup();
 
     private JRadioButton rbXss = new JRadioButton(Constant.messages.getString(PREFIX + "xss"));
     private JRadioButton rbSqlI = new JRadioButton(Constant.messages.getString(PREFIX + "sqli"));
     private JRadioButton rbXmlI = new JRadioButton(Constant.messages.getString(PREFIX + "xmli"));
     private JRadioButton rbBO = new JRadioButton(Constant.messages.getString(PREFIX + "bufferoverflow"));
-    private JRadioButton rbYetToDefine = new JRadioButton(Constant.messages.getString(PREFIX + "tba"));
-    private JRadioButton rbCustom = new JRadioButton(Constant.messages.getString(PREFIX + "custom"));
+    private JRadioButton rbJson = new JRadioButton(Constant.messages.getString(PREFIX + "json"));
+
+    private JRadioButton rbUrl = new JRadioButton(Constant.messages.getString(PREFIX + "url"));
+    private JRadioButton rbBody = new JRadioButton(Constant.messages.getString(PREFIX + "body"));
 
     private JButton buttonScan = new JButton(Constant.messages.getString(PREFIX + "scan"));
     private JButton buttonCancel = new JButton(Constant.messages.getString("all.button.cancel"));
@@ -109,15 +112,24 @@ public class ScanOpenApiDialog extends AbstractDialog {
 
         // TBD radiobutton
         constraints.gridy = 4;
-        rbYetToDefine.setActionCommand("4");
-        rbGroup.add(rbYetToDefine);
-        add(rbYetToDefine, constraints);
+        rbJson.setActionCommand("4");
+        rbGroup.add(rbJson);
+        add(rbJson, constraints);
 
-        // Custom radiobutton
+        // URL rb
+        constraints.gridx = 0;
         constraints.gridy = 5;
-        rbCustom.setActionCommand("5");
-        rbGroup.add(rbCustom);
-        add(rbCustom, constraints);
+        rbUrl.setActionCommand("url");
+        rbUrl.setSelected(true);
+        rbTypeGroup.add(rbUrl);
+        add(rbUrl, constraints);
+
+        // Body rb
+        constraints.gridx = 1;
+        constraints.gridy = 5;
+        rbBody.setActionCommand("body");
+        rbTypeGroup.add(rbBody);
+        add(rbBody, constraints);
 
         // Scan button
         constraints.gridx = 1;
@@ -140,13 +152,13 @@ public class ScanOpenApiDialog extends AbstractDialog {
             if (!url.isEmpty()) {
                 // Parsing in other thread
                 try {
-                    caller.importOpenApiDefinition(new URI(url, false),true, rbGroup.getSelection().getActionCommand());
+                    caller.importOpenApiDefinition(new URI(url, false),true, rbGroup.getSelection().getActionCommand(), rbTypeGroup.getSelection().getActionCommand());
                 } catch (URIException e) {
                     View.getSingleton().showWarningDialog(thisDialog, Constant.messages.getString(PREFIX + "badurl"));
                 }
             } else if (url.isEmpty() || file != null) {
                 // Parsing imported file in another thread
-                caller.importOpenApiDefinition(file, true, rbGroup.getSelection().getActionCommand());
+                caller.importOpenApiDefinition(file, true, rbGroup.getSelection().getActionCommand(), rbTypeGroup.getSelection().getActionCommand());
             }
         }
         setVisible(false);

@@ -103,9 +103,9 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor {
         return Constant.ZAP_TEAM + " plus Joanna Bona, Artur Grzesica, Michal Materniak and Marcin Spiewak -- Addition:" + Constant.messages.getString("openapiscanner.author");
     }
 
-    public List<String> importOpenApiDefinition(File file, boolean initViaUi, String type) {
+    public List<String> importOpenApiDefinition(File file, boolean initViaUi, String type, String type2) {
         try {
-            importOpenApiDefinition((Scheme) null, FileUtils.readFileToString(file), initViaUi, type);
+            importOpenApiDefinition((Scheme) null, FileUtils.readFileToString(file), initViaUi, type, type2);
         } catch (IOException e) {
             if (initViaUi) {
                 View.getSingleton().showWarningDialog(Constant.messages.getString("openapiscanner.io.error"));
@@ -117,12 +117,12 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor {
         return null;
     }
 
-    public List<String> importOpenApiDefinition(URI uri, boolean initViaUi, String type) {
+    public List<String> importOpenApiDefinition(URI uri, boolean initViaUi, String type, String type2) {
         Requestor requestor = new Requestor(HttpSender.MANUAL_REQUEST_INITIATOR);
         requestor.addListener(new HistoryPersister());
         try {
             return importOpenApiDefinition(
-                    Scheme.forValue(uri.getScheme().toLowerCase()), requestor.getResponseBody(uri), initViaUi, type);
+                    Scheme.forValue(uri.getScheme().toLowerCase()), requestor.getResponseBody(uri), initViaUi, type, type2);
         } catch (IOException e) {
             if (initViaUi) {
                 View.getSingleton().showWarningDialog(Constant.messages.getString("openapiscanner.io.error"));
@@ -134,7 +134,7 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor {
         return null;
     }
 
-    private List<String> importOpenApiDefinition(final Scheme defaultScheme, final String definition, final boolean initViaUi, final String type) {
+    private List<String> importOpenApiDefinition(final Scheme defaultScheme, final String definition, final boolean initViaUi, final String type, final String type2) {
         final List<String> errors = new ArrayList<>();
 
         Thread thread = new Thread(THREAD_PREFIX + threadId++) {
@@ -173,7 +173,7 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor {
 
                     // Merge request models with chosen library
                     FuzzerLibraryParser libParser = new FuzzerLibraryParser(path);
-                    MergeLibReqModel merger = new MergeLibReqModel(libParser.getList(), converter.getRequestModels());
+                    MergeLibReqModel merger = new MergeLibReqModel(libParser.getList(), converter.getRequestModels(), type2);
 
 //                    errors.addAll(requestor.run(converter.getRequestModels()));
                     errors.addAll(requestor.run(merger.getConvertedRequestModels()));

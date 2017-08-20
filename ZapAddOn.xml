@@ -20,6 +20,7 @@
         <file>fuzzers/xss.txt</file>
         <file>fuzzers/sqli.txt</file>
         <file>fuzzers/xmli.txt</file>
+        <file>fuzzers/json.txt</file>
     </files>
     <not-before-version>2.6.0</not-before-version>
     <not-from-version></not-from-version>
