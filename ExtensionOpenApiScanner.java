@@ -164,8 +164,7 @@ public class ExtensionOpenApiScanner extends ExtensionAdaptor {
                             path = Constant.getZapHome() + "fuzzers/bufferoverflow.txt";
                             break;
                         case "4":
-                            // path = Constant.getZapHome() + "fuzzers/.txt";
-                            path = "";
+                            path = Constant.getZapHome() + "fuzzers/json.txt";
                             break;
                         default:
                             break;
